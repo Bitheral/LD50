@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEditor;
 public class Construction
 {
 
-    GameObject meshObject;
+    private static Object satelliteDish = (Object)Resources.Load("Prefabs/Buildings/Dish");
+
     private static Quaternion toLocalUp(Transform target, RaycastHit hitPoint)
     {
         // Could probably just use hit.normal
@@ -32,11 +33,25 @@ public class Construction
         return false;
     }
 
+    private static GameObject GetModel(ConstructionType type, int level)
+    {
+        switch (type)
+        {
+            case ConstructionType.COMMUNICATIONS:
+                GameObject gO = (GameObject)GameObject.Instantiate(satelliteDish, Vector3.zero, Quaternion.identity);
+                return gO;
+        }
+
+        return null;
+    }
+
     public static void createConstruction(ConstructionType type, int level, RaycastHit hit)
     {
         if (isValidPoint(hit))
         {
-            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            GameObject model = GetModel(type, level);
+
+            //GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             Transform constructions = hit.transform.Find("Constructions");
             if (!constructions)
             {
@@ -45,17 +60,9 @@ public class Construction
                 constructions.parent = hit.transform;
             }
 
-            cube.transform.parent = constructions;
-            cube.transform.localScale = cube.transform.localScale * 0.25f;
-
-            Vector3 elongate = cube.transform.localScale;
-            elongate.y *= 2;
-
-            cube.transform.localScale = elongate;
-
-            cube.transform.position = hit.point;
-
-            cube.transform.rotation = toLocalUp(cube.transform, hit);
+            model.transform.parent = constructions;
+            model.transform.position = hit.point;
+            model.transform.rotation = toLocalUp(model.transform, hit);
         }
     }
 }

@@ -27,6 +27,8 @@ public class OrbitCamera : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        if (target) GameManager.earthTransform = target;
+
         Vector3 angles = transform.eulerAngles;
         x = angles.y;
         y = angles.x;
