@@ -73,3 +73,4 @@ crashlytics-build.properties
 
 # Hide AssetStore assets
 /[Aa]ssets/[Aa]sset[Ss]tore/
+/[Aa]ssets/[Aa]sset[Ss]tore.meta
